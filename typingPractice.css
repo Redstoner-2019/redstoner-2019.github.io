@@ -1,0 +1,113 @@
+.info-dropdown-button {
+    width: 200px;
+    height: 50px;
+    background-color: rgb(120,120,120);
+    color: rgb(120,120,120);
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+}
+.info-dropdown-button-letter {
+    width: 200px;
+    height: 50px;
+    background-color: rgb(120,120,120);
+    color: rgb(120,120,120);
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    left: 200px;
+    top: 0px;
+    position: absolute;
+}
+.info-dropdown-button:hover, .info-dropdown-button:focus {
+    background-color: rgb(150,150,150);
+}
+.info-dropdown-button-letter:hover, .info-dropdown-button-letter:focus {
+    background-color: rgb(150,150,150);
+}
+.info-dropdown-general {
+    position: relative;
+    display: inline-block;
+}
+.info-dropdown-content {
+    top: 50px;
+    display: none;
+    position: absolute;
+    background-color: rgb(30,30,30);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.info-dropdown-content-letter {
+    top: 50px;
+    display: none;
+    position: absolute;
+    background-color: rgb(30,30,30);
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    left: 200px
+}
+.info-dropdown-content p {
+    color: rgb(220,220,220);
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+.info-dropdown-content-letter p {
+    color: rgb(220,220,220);
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+.info-dropdown-content a:hover {background-color: #ddd;}
+.info-dropdown-content-letter a:hover {background-color: #ddd;}
+.tp-title {
+    position: absolute;
+    color: rgb(220,220,220);
+    padding: 16px;
+    text-decoration: none;
+    /*background-color: rgb(120,120,120);*/
+    left: 400px;
+    font-size: 16px;
+    width: 800px;
+    top: -16px;
+}
+hr.rounded {
+    border-top: 8px solid #bbb;
+    border-radius: 5px;
+    width: 1000px;
+    position: relative;
+    top: 160px;
+}
+.user-text-input-c {
+    position: absolute;
+    left: 100px;
+    top: 200px;
+    width: 500px;
+    height: 300px;
+}
+.color-red {
+    color: red;
+}
+.color-green {
+    color: green;
+}
+.color-yellow {
+    color: yellow;
+}
+
+
+
+
+.show {display:block;}
+body {
+    background-color: rgb(50,50,50);
+}
