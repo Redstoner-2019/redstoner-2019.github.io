@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="typingPractice.css">
+        <script src="typingPractice.js" async></script>
+    </head>
+    <body onresize="setSizes()">
+        <div class="info-dropdown-general">
+            <button onClick="infoClick()" class="info-dropdown-button" style="color: rgb(220,220,220);">View Stats</button>
+            <div id="info-dropdown" class="info-dropdown-content">
+                <p>Stats</p>
+                <p><u>Last set:</u></p>
+                <p> - Time: 0s</p>
+                <p> - CPM: 0</p>
+                <p> - Wrong Chars: 0%</p>
+                <p></p>
+                <p><u>Today</u></p>
+                <p> - Sets: 0</p>
+                <p> - Chars typed: 0</p>
+                <p> - Average CPM: 0 CPM</p>
+                <p> - Total time: 0s</p>
+                <p> - Mistake ratio: 0%</p>
+                <p></p>
+                <p><u>Total</u></p>
+                <p> - Sets: 0</p>
+                <p> - Chars typed: 0</p>
+                <p> - Average CPM: 0 CPM</p>
+                <p> - Total time: 0s</p>
+                <p> - Mistake ratio: 0%</p>
+            </div>
+            <button onClick="infoByLetterClick()" class="info-dropdown-button-letter" style="color: rgb(220,220,220);">View Stats by Letter</button>
+
+
+            <button onClick="resetRun()" id="resetRun" style="color: rgb(220,220,220);;font-size: 12px;">Reset Current Run</button>
+            <button onClick="setRandomText()" id="newText" style="color: rgb(220,220,220);;font-size: 12px;">Generate new Text</button>
+            <button onClick="deleteRunData()" id="deleteRunData" style="color: rgb(220,220,220);;font-size: 12px;">Delete run Data</button>
+            <button onClick="deleteTodaysData()" id="deleteTodaysData" style="color: rgb(220,220,220);;font-size: 12px;">Delete todays Data</button>
+            <button onClick="deleteAllData()" id="deleteAllData" style="color: rgb(220,220,220);;font-size: 12px;">Delete ALL Data</button>
+
+
+            <div id="info-dropdown-letters" class="info-dropdown-content-letter">
+                <p style="color: rgb(220,220,220)" id="dropdown-letters-stats">Stats</p>
+            </div>
+            <p class="tp-title" id="tp-title">Typing Practice</p>
+            <input id="dark_mode" value="Dark mode enabled" type="checkbox" style="position:absolute;left:410px;top:100px">
+            <p id="dark_mode_desc" style="position: absolute;">Enable/disable dark mode</p>
+            <p id="p-length" style="color:rgb(220,220,220); position: absolute; left: 0px; top: 50px; width: 200px;">Text length:</p>
+            <input id="input-length" style="left: 100px;position:absolute;top: 65px;width:50px" id="length" type="number" value="5" />
+            <div id="current-stat">
+                <p id="p-currentTry" style="position:absolute;left:0px;top:100px;width:200px;color:rgb(220,220,220)"><u>Current Try</u></p>
+                <p id="p-cpm" style="position:absolute;left:0px;top:100px;width:200px;color:rgb(220,220,220)">CPM: 0CPM</p>
+                <p id="p-time" style="position:absolute;left:0px;top:120px;width:200px;color:rgb(220,220,220)">CPM: 0CPM</p>
+                <p id="p-charstyped" style="position:absolute;left:0px;top:140px;width:200px;color:rgb(220,220,220)">CPM: 0CPM</p>
+                <p id="p-charsmistyped" style="position:absolute;left:0px;top:160px;width:200px;color:rgb(220,220,220)">CPM: 0CPM</p>
+                <hr id="border-top" class="rounded">
+            </div>
+            <textarea type="text" id="user-text-input" name="user-text-input" class="user-text-input-c" style="background: rgb(120,120,120);color: rgb(220,220,220);"></textarea>
+            <p id="text-output"></p>
+        </div>
+    </body>
+</html>

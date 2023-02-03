@@ -1,0 +1,143 @@
+/*var button = document.getElementsByClassName("button-to-chase")[0];
+var buttonContainer = document.getElementsByClassName("button-container")[0];
+var body = document.getElementsByClassName("body")[0];
+console.log("Hello World!")
+
+var x = parseInt(window.getComputedStyle(buttonContainer).getPropertyValue("left"))
+var y = parseInt(window.getComputedStyle(buttonContainer).getPropertyValue("top"))
+
+const moveButton = {
+    moveButton(event){
+        var buttonWidth = button.clientWidth
+
+        var nLimitX = 0
+        var nLimitY = -window.innerHeight/2
+        var pLimitX = window.innerWidth-buttonWidth
+        var pLimitY = window.innerHeight/2
+
+        console.log(nLimitX)
+        console.log(nLimitY)
+        console.log(pLimitX)
+        console.log(pLimitY)
+        console.log("------------")
+
+        var left = parseInt(window.getComputedStyle(buttonContainer).getPropertyValue("left"))
+        var top = parseInt(window.getComputedStyle(buttonContainer).getPropertyValue("top"))
+
+        var mouseX = event.clientX
+        var mouseY = event.clientY
+
+        var dx = 0
+        var dy = 10
+        
+        console.log("orig x " + left)
+        console.log("orig y " + top)
+
+        console.log("mouse x" + mouseX)
+        console.log("mouse y" + mouseY)
+
+        console.log(buttonWidth)
+
+        console.log("--------")
+
+        dy = mouseY + top
+        dx = (((buttonWidth/2)+left) - mouseX)
+
+        left = left + dx
+        top = top - dy
+
+        if(left>pLimitX){
+            left = nLimitX
+         }
+         if(left<nLimitX){
+            left = pLimitX
+         }
+         if(top>pLimitY){
+            top = nLimitY
+         }
+         if(top<nLimitY){
+            top = pLimitY
+         }
+
+        buttonContainer.style.left = left + "px"
+        buttonContainer.style.top = top + "px"
+
+        console.log("dx " + dx)
+        console.log("dy " + dy)
+
+        console.log("new x " + left)
+        console.log("new y " + top)
+        console.log("--------")
+        console.log("\n\n\n\n\n")
+    }
+}
+
+window.addEventListener('mousemove', (event) => {
+    move(event)
+});
+button.addEventListener('mouseover', (event) => {
+    //moveButton.moveButton(event)
+});
+
+function move(event){
+    var buttonWidth = button.clientWidth
+    var buttonHeight = button.clientHeight
+
+    var nLimitX = 0
+    var nLimitY = -window.innerHeight/2
+    var pLimitX = window.innerWidth-buttonWidth
+    var pLimitY = window.innerHeight/2
+
+    x = x + (buttonWidth/2)
+    y = y - (buttonHeight/2)
+
+    var mouseX = event.clientX
+    var mouseY = event.clientY
+    mouseY = mouseY - (window.innerHeight/2)
+
+    var dx = x - mouseX
+    var dy = (y + innerHeight/2) + mouseY
+    if((y + innerHeight/2) > mouseY){
+        dy = 10
+    } else {
+        dy = -10
+    }
+    dy = dy * -1
+
+    //dy = mouseY + y
+    dx = (((buttonWidth/2)+x) - mouseX)
+
+    var factor =  Math.sqrt((dx*dx)+(dy*dy))
+    factor = 10/factor
+
+    x = x - (buttonWidth/2)
+    y = y + (buttonHeight/2)
+
+    //console.log("X " + x)
+    //console.log(mouseY + " / " + dy + " / " + (y))
+    console.log(event.clientY + "/" + event.clientX)
+    if(true){
+        x = x + (dx/10*factor)
+        y = y + (dy/10*factor) 
+    }
+
+    if(x>pLimitX){
+        x = window.innerWidth/2
+     }
+     if(x<nLimitX){
+        x = window.innerWidth/2
+     }
+     if(y>pLimitY){
+        y = 0
+     }
+     if(y<nLimitY){
+        y = 0
+     }
+
+    buttonContainer.style.left = x + "px"
+    buttonContainer.style.top = y + "px"
+
+    //console.log("X " + x)
+    //console.log("Y " + dy)
+    //console.log("factor " + factor)
+}*/
