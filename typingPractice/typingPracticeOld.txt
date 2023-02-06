@@ -1,0 +1,218 @@
+var currentIndex = 0;
+var currentText = "";
+var correctChars = 0;
+var incorrectChars = 0;
+var attempts = 0;
+var time = 0;
+var done = false;
+
+function infoClick() {
+  document.getElementById("info-dropdown").classList.toggle("show");
+}
+function infoByLetterClick() {
+  document.getElementById("info-dropdown-letters").classList.toggle("show");
+}
+window.onclick = function (event) {
+  if (!event.target.matches(".info-dropdown-button")) {
+    var dropdowns = document.getElementsByClassName("info-dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
+      }
+    }
+  }
+  if (!event.target.matches(".info-dropdown-button-letter")) {
+    var dropdowns = document.getElementsByClassName(
+      "info-dropdown-content-letter"
+    );
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains("show")) {
+        openDropdown.classList.remove("show");
+      }
+    }
+  }
+};
+//document.getElementById("tp-title").style.left = 100;
+
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+
+var p_currentTry = document.getElementById("p-currentTry");
+var input_length = document.getElementById("input-length");
+var p_cpm = document.getElementById("p-cpm");
+var p_time = document.getElementById("p-time");
+var p_typed = document.getElementById("p-charstyped");
+var p_mistyped = document.getElementById("p-charsmistyped");
+var div_current_stat = document.getElementById("current-stat");
+var borderTop = document.getElementById("border-top");
+var textinput = document.getElementById("user-text-input");
+var offsetYStats = 60;
+
+p_currentTry.textContent = "Current Try";
+p_currentTry.style.textDecoration = "underline";
+p_currentTry.style.left = windowWidth - 200 + "px";
+p_currentTry.style.top = offsetYStats - 20 + "px";
+
+function setCurrentTryData(cpm, time, charstyped, charsmistyped) {
+  p_cpm.textContent = "CPM:            " + cpm + "CPM";
+  p_time.textContent = "Time:           " + time;
+  p_typed.textContent = "chars typed:    " + charstyped;
+  p_mistyped.textContent = "chars mistyped: " + charsmistyped;
+}
+
+function setSizes() {
+  p_currentTry.style.left = windowWidth - 200 + "px";
+  p_currentTry.style.top = offsetYStats - 20 + "px";
+
+  p_cpm.style.left = windowWidth - 200 + "px";
+  p_cpm.style.top = offsetYStats + "px";
+
+  p_time.style.left = windowWidth - 200 + "px";
+  p_time.style.top = offsetYStats + 20 + "px";
+
+  p_typed.style.left = windowWidth - 200 + "px";
+  p_typed.style.top = offsetYStats + 40 + "px";
+
+  p_mistyped.style.left = windowWidth - 200 + "px";
+  p_mistyped.style.top = offsetYStats + 60 + "px";
+
+  borderTop.style.width = windowWidth - 20 + "px";
+
+  textinput.style.left = "100px";
+  textinput.style.width = windowWidth - 200 + "px";
+  textinput.style.textAlign = "center";
+}
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(find, "g"), replace);
+}
+
+function setRandomText() {
+  done = false;
+  fetch(
+    "https://random-word-api.herokuapp.com/word?number=" + input_length.value
+  )
+    .then((response) => response.json())
+    .then((response) => setText(response));
+}
+
+function setText(string) {
+  currentText = String(string);
+  currentText = replaceAll(currentText, ",", " ");
+  //currentText = "<span>Some text</span>";
+  textinput.textContent = currentText;
+  currentIndex = 0;
+}
+
+window.addEventListener("resize", (event) => {
+  setSizes();
+});
+
+/*textinput.addEventListener("input", (event) => {
+  done = true;
+  console.log(String(event.target.value).charAt(currentIndex));
+  var typed = String(event.target.value).charAt(currentIndex);
+  console.log(
+    typed +
+      " was typed, should have been " +
+      currentText.charAt(currentIndex) +
+      " now at index " +
+      currentIndex
+  );
+  attempts++;
+  if (typed == currentText.charAt(currentIndex)) {
+    currentIndex++;
+    correctChars++;
+  } else {
+    incorrectChars++;
+  }
+
+  textinput.value = currentText;
+  setCaretPosition(textinput, currentIndex);
+  if (currentIndex >= currentText.length) {
+    currentIndex = 0;
+    setRandomText();
+    setCaretPosition(textinput, currentIndex);
+    done = false;
+  }
+});*/
+
+textinput.addEventListener("click", (event) => {
+  setCaretPosition(textinput, currentIndex);
+});
+
+input_length.addEventListener("click", (event) => {
+  setRandomText();
+});
+
+window.addEventListener("keydown", function (e) {
+  e.preventDefault();
+  console.log(e.key, currentText.charAt(currentIndex), currentIndex);
+  if (e.key == currentText.charAt(currentIndex)) {
+    currentIndex++;
+  }
+  setCaretPosition(textinput, currentIndex);
+  console.log(currentText.charAt(currentIndex), currentIndex);
+
+  if (e.keyCode == 37 || e.keyCode == 39) e.preventDefault();
+});
+
+setSizes();
+setRandomText();
+setCurrentTryData(10, "0:12:45", 140, 0);
+
+function setCaretPosition(elem, caretPos) {
+  console.log("moving to ", caretPos);
+  if (elem != null) {
+    if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.move("character", caretPos);
+      range.select();
+    } else {
+      if (elem.selectionStart) {
+        elem.focus();
+        elem.setSelectionRange(caretPos, caretPos);
+      } else elem.focus();
+    }
+  }
+}
+
+setInterval(incrementTimer, 10);
+
+var lastIndex = 0;
+var lastStatus = done;
+function incrementTimer() {
+  if (!lastStatus) {
+    if (done) {
+      time = 0;
+    }
+  }
+  lastStatus = done;
+  if (done) {
+    time++;
+  }
+  if (currentIndex > 0) {
+    lastIndex = currentIndex;
+    setCurrentTryData(
+      Math.floor((lastIndex / time) * 1000) / 10,
+      String(time),
+      correctChars,
+      incorrectChars
+    );
+  } else {
+    if (lastIndex > 0) {
+      setCurrentTryData(
+        Math.floor((lastIndex / time) * 1000) / 10,
+        String(time),
+        correctChars,
+        incorrectChars
+      );
+    } else {
+      setCurrentTryData("0", String(time), correctChars, incorrectChars);
+    }
+  }
+  //console.log(time);
+}
