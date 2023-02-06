@@ -1,21 +1,15 @@
-/**
- * setting up all important global Variables
- */
-
 var correctChars = 0;
 var incorrectChars = 0;
 var attempts = 0;
 var time = 0;
 var done = false;
 
-//Today stats
 var todaysSets = 0;
 var todaysCharsTyped = 0;
 var todaysCharsCorrect = 0;
 var todaysCharsIncorrect = 0;
 var todaystime = 0;
 
-//Total stats
 var totalSets = 0;
 var totalCharsTyped = 0;
 var totalCharsIncorrect = 0;
@@ -28,6 +22,7 @@ var windowHeight = window.innerHeight;
 var p_currentTry = document.getElementById("p-currentTry");
 var input_length = document.getElementById("input-length");
 var p_cpm = document.getElementById("p-cpm");
+var p_length = document.getElementById("p-length");
 var p_time = document.getElementById("p-time");
 var p_typed = document.getElementById("p-charstyped");
 var p_mistyped = document.getElementById("p-charsmistyped");
@@ -47,6 +42,9 @@ var setRandomTextButton = document.getElementById("newText");
 var deleteRunDataButton = document.getElementById("deleteRunData");
 var deleteTodaysDataButton = document.getElementById("deleteTodaysData");
 var deleteAllDataButton = document.getElementById("deleteAllData");
+
+var hoveringStats = false;
+var hoveringLetters = false;
 
 var darkmode_bool = false;
 var offsetYStats = 0;
@@ -71,18 +69,11 @@ todaystime = window.localStorage.getItem("todaystime");
 
 errorCharsAttempts = window.localStorage.errorCharsAttempts;
 errorCharsSuccesses = window.localStorage.errorCharsSuccesses;
-
-//errorCharsAttempts = new Map(JSON.parse(localStorage.errorCharsAttempts));
-//errorCharsSuccesses = new Map(JSON.parse(localStorage.errorCharsSuccesses));
-
-console.log(errorCharsAttempts);
-console.log(errorCharsSuccesses);
 try {
   errorCharsAttempts.has("testValue");
 } catch (error) {
   errorCharsAttempts = new Map();
   errorCharsAttempts.set("testValue", "testValue");
-  console.log("1");
 }
 
 try {
@@ -90,11 +81,7 @@ try {
 } catch (error) {
   errorCharsSuccesses = new Map();
   errorCharsSuccesses.set("testValue", "testValue");
-  console.log("2");
 }
-
-console.log(errorCharsAttempts);
-console.log(errorCharsSuccesses);
 
 if (todaysSets == null) {
   todaysSets = 0;
@@ -141,9 +128,6 @@ if (totalTime == null) {
   totalTime = 0;
 }
 
-/**
- * util Methods
- */
 function replaceAll(str, find, replace) {
   return str.replace(new RegExp(find, "g"), replace);
 }
@@ -151,7 +135,6 @@ function replaceAll(str, find, replace) {
 function setText(string) {
   currentFullText = String(string);
   currentFullText = replaceAll(currentFullText, ",", " ");
-  //currentFullText = "<span>Some text</span>";
   currentIndex = 0;
   textLeft = currentFullText.substring(1);
   typedText = "";
@@ -187,7 +170,7 @@ function msToTime(duration) {
   hours = hours < 10 ? "0" + hours : hours;
   minutes = minutes < 10 ? "0" + minutes : minutes;
   seconds = seconds < 10 ? "0" + seconds : seconds;
-  milliseconds = milliseconds < 10 ? "0" + milliseconds : milliseconds;
+  milliseconds = milliseconds < 10 ? milliseconds + "" : milliseconds;
 
   return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
@@ -229,6 +212,13 @@ function setSizes() {
   window.localStorage.todaysCharsCorrect = todaysCharsCorrect;
   window.localStorage.todaysCharsIncorrect = todaysCharsIncorrect;
   window.localStorage.todaystime = todaystime;
+  if (window.localStorage.getItem("lastEdited") != getDate()) {
+    todaysSets = 0;
+    todaysCharsCorrect = 0;
+    todaysCharsIncorrect = 0;
+    todaysCharsTyped = 0;
+    todaystime = 0;
+  }
   window.localStorage.lastEdited = getDate();
 
   window.localStorage.totalSets = totalSets;
@@ -239,15 +229,6 @@ function setSizes() {
 
   window.localStorage.errorCharsAttempts = errorCharsAttempts;
   window.localStorage.errorCharsSuccesses = errorCharsSuccesses;
-
-  /*window.localStorage.setItem(
-    "errorCharsAttempts",
-    JSON.stringify(Array.from(errorCharsAttempts.entries()))
-  );
-  window.localStorage.setItem(
-    "errorCharsSuccesses",
-    JSON.stringify(Array.from(errorCharsSuccesses.entries()))
-  );*/
 
   var leftOffset = windowWidth - 300;
   tp_title.style.left = (windowWidth - 500) / 2 + "px";
@@ -335,26 +316,80 @@ function setSizes() {
   deleteTodaysDataButton.style.width = "100px";
   deleteTodaysDataButton.style.backgroundColor = "rgb(120,120,120)";
 
+  var innerHtml = '<p id="text-output">';
+  for (var counter = 0; counter < currentFullText.length; counter++) {
+    if (mistyped_indicies[counter] == "error") {
+      if (counter == currentIndex) {
+        innerHtml =
+          innerHtml +
+          '<u style="text-decoration-color:rgb(255,0,0)"><span style="color:rgb(255,0,0)">' +
+          currentFullText.charAt(counter) +
+          "</span></u>";
+      } else {
+        innerHtml =
+          innerHtml +
+          '<span style="color:rgb(200,0,0)">' +
+          currentFullText.charAt(counter) +
+          "</span>";
+      }
+    } else {
+      if (counter == currentIndex) {
+        innerHtml =
+          innerHtml +
+          '<u style="text-decoration-color:rgb(255,200,0)"><span style=" color:rgb(255,200,0)">' +
+          currentFullText.charAt(counter) +
+          "</span></u>";
+      } else if (counter < currentIndex) {
+        innerHtml =
+          innerHtml +
+          '<span style="color:rgb(0,200,0)">' +
+          currentFullText.charAt(counter) +
+          "</span>";
+      } else {
+        if (darkmode_bool) {
+          innerHtml =
+            innerHtml +
+            '<span style="color:rgb(220,220,220)">' +
+            currentFullText.charAt(counter) +
+            "</span>";
+        } else {
+          innerHtml =
+            innerHtml +
+            '<span style="color: black">' +
+            currentFullText.charAt(counter) +
+            "</span>";
+        }
+      }
+    }
+  }
+  innerHtml = innerHtml + "</p>";
+  textOutput.innerHTML = innerHtml;
+
   var html = "";
   for (var counter = 97; counter <= 122; counter++) {
     var currentC = String.fromCharCode(counter);
-    var string_stats_letters =
-      currentC +
-      ": " +
-      Math.floor(
-        (errorCharsSuccesses.get(currentC) / errorCharsAttempts.get(currentC)) *
-          1000
-        //(errorCharsSuccesses.get(currentC) / 1) * 1000
-      ) /
-        10 +
-      "% \n";
-    html =
-      html +
-      '<p style="color: rgb(220,220,220)">' +
-      string_stats_letters +
-      "</p>";
+    try {
+      var string_stats_letters =
+        currentC +
+        ": " +
+        String.fromCharCode(9) +
+        Math.floor(
+          (errorCharsSuccesses.get(currentC) /
+            (errorCharsAttempts.get(currentC) -
+              errorCharsSuccesses.get(currentC))) *
+            1000
+        ) /
+          10 +
+        "% wrong";
+      (" \n");
+      html =
+        html +
+        '<p style="color: rgb(220,220,220)">' +
+        string_stats_letters +
+        "</p>";
+    } catch (error) {}
   }
-  html = replaceAll(html, "NaN", "???");
+  html = replaceAll(html, "NaN% wrong", "No Data");
   infoDropdownLetterStats.innerHTML = html;
   html = "";
   for (var counter = 0; counter <= 19; counter++) {
@@ -455,8 +490,6 @@ function setSizes() {
   }
   html = replaceAll(html, "NaN", "???");
   infoDropdownStats.innerHTML = html;
-  //infoDropdownStats.innerHTML = html;
-
   darkmode_bool = darkmode.checked;
 
   if (darkmode_bool) {
@@ -469,6 +502,28 @@ function setSizes() {
     p_typed.style.color = "rgb(220,220,220)";
     darkmodeDesc.style.color = "rgb(220,220,220)";
     tp_title.style.color = "rgb(220,220,220)";
+    p_length.style.color = "rgb(220,220,220)";
+    resetRunButton.style.backgroundColor = "rgb(120,120,120)";
+    deleteAllDataButton.style.backgroundColor = "rgb(120,120,120)";
+    deleteRunDataButton.style.backgroundColor = "rgb(120,120,120)";
+    setRandomTextButton.style.backgroundColor = "rgb(120,120,120)";
+    deleteTodaysDataButton.style.backgroundColor = "rgb(120,120,120)";
+    infoDropdownStats.style.backgroundColor = "rgb(50,50,50)";
+    infoDropdownLetterStats.style.backgroundColor = "rgb(50,50,50)";
+    if (hoveringStats) {
+      document.getElementById("dropdown-button-general").style.backgroundColor =
+        "rgb(180,180,180)";
+    } else {
+      document.getElementById("dropdown-button-general").style.backgroundColor =
+        "rgb(120,120,120)";
+    }
+    if (hoveringLetters) {
+      document.getElementById("dropdown-button-letters").style.backgroundColor =
+        "rgb(180,180,180)";
+    } else {
+      document.getElementById("dropdown-button-letters").style.backgroundColor =
+        "rgb(120,120,120)";
+    }
   } else {
     body.style.backgroundColor = "white";
     p_cpm.style.color = "black";
@@ -479,15 +534,44 @@ function setSizes() {
     p_typed.style.color = "black";
     darkmodeDesc.style.color = "black";
     tp_title.style.color = "black";
+    p_length.style.color = "black";
+    resetRunButton.style.backgroundColor = "rgb(0,150,220)";
+    deleteAllDataButton.style.backgroundColor = "rgb(0,150,220)";
+    deleteRunDataButton.style.backgroundColor = "rgb(0,150,220)";
+    setRandomTextButton.style.backgroundColor = "rgb(0,150,220)";
+    deleteTodaysDataButton.style.backgroundColor = "rgb(0,150,220)";
+    infoDropdownLetterStats.style.backgroundColor = "rgb(0,150,120)";
+    infoDropdownStats.style.backgroundColor = "rgb(0,150,120)";
+    document.getElementById("dropdown-button-general").style.backgroundColor =
+      "rgb(0,150,220)";
+    document.getElementById("dropdown-button-letters").style.backgroundColor =
+      "rgb(0,150,220)";
+    if (hoveringStats) {
+      document.getElementById("dropdown-button-general").style.backgroundColor =
+        "rgb(0,200,255)";
+    } else {
+      document.getElementById("dropdown-button-general").style.backgroundColor =
+        "rgb(0,150,220)";
+    }
+    if (hoveringLetters) {
+      document.getElementById("dropdown-button-letters").style.backgroundColor =
+        "rgb(0,200,255)";
+    } else {
+      document.getElementById("dropdown-button-letters").style.backgroundColor =
+        "rgb(0,150,220)";
+    }
   }
 }
 
 function resetRun() {
-  setRandomText();
   time = 0;
   correctChars = 0;
   incorrectChars = 0;
   attempts = 0;
+  currentIndex = 0;
+  typedText = "";
+  textLeft = currentFullText;
+  mistyped_indicies = [];
   setSizes();
 }
 function deleteTodaysData() {
@@ -501,6 +585,8 @@ function deleteTodaysData() {
   todaysCharsTyped = 0;
   todaysSets = 0;
   todaystime = 0;
+  errorCharsAttempts = new Map();
+  errorCharsSuccesses = new Map();
   setSizes();
 }
 function deleteAllData() {
@@ -514,6 +600,10 @@ function deleteAllData() {
   totalCharsTyped = 0;
   totalSets = 0;
   totalTime = 0;
+  attempts = 0;
+  time = 0;
+  errorCharsAttempts = new Map();
+  errorCharsSuccesses = new Map();
   window.localStorage.clear();
   setSizes();
 }
@@ -544,19 +634,12 @@ input_length.addEventListener("click", (event) => {
   }
 });
 
-/**
- * setting up window
- */
-
 setSizes();
 setRandomText();
 setCurrentTryData(0, 120000, 0, 0);
-/**
- * all events
- */
 
 input_length.addEventListener("click", (event) => {
-  setRandomText();
+  //setRandomText();
 });
 
 function infoClick() {
@@ -565,6 +648,28 @@ function infoClick() {
 function infoByLetterClick() {
   document.getElementById("info-dropdown-letters").classList.toggle("show");
 }
+
+document
+  .getElementById("dropdown-button-general")
+  .addEventListener("mouseenter", (event) => {
+    hoveringStats = true;
+  });
+document
+  .getElementById("dropdown-button-general")
+  .addEventListener("mouseleave", (event) => {
+    hoveringStats = false;
+  });
+document
+  .getElementById("dropdown-button-letters")
+  .addEventListener("mouseenter", (event) => {
+    hoveringLetters = true;
+  });
+document
+  .getElementById("dropdown-button-letters")
+  .addEventListener("mouseleave", (event) => {
+    hoveringLetters = false;
+  });
+
 window.onclick = function (event) {
   if (!event.target.matches(".info-dropdown-button")) {
     var dropdowns = document.getElementsByClassName("info-dropdown-content");
@@ -597,21 +702,25 @@ textinput.addEventListener("keydown", function (e) {
   if (currentIndex >= currentFullText.length && !(e.key == "Enter")) {
     return;
   }
-
-  if (!errorCharsAttempts.has(e.key)) {
-    errorCharsAttempts.set(e.key, 0);
+  try {
+    if (!errorCharsAttempts.has(currentChar)) {
+      errorCharsAttempts.set(currentChar, 0);
+    }
+  } catch (error) {
+    errorCharsAttempts.set(currentChar, 0);
   }
-  if (!errorCharsSuccesses.has(e.key)) {
-    errorCharsSuccesses.set(e.key, 0);
+  try {
+    if (!errorCharsSuccesses.has(currentChar)) {
+      errorCharsSuccesses.set(currentChar, 0);
+    }
+  } catch (error) {
+    errorCharsSuccesses.set(currentChar, 0);
   }
 
   var lastCharWrong = true;
 
   lastCharWrong = e.key == currentFullText.charAt(currentIndex);
-  attempts++;
-  todaysCharsTyped++;
-  totalCharsTyped++;
-  errorCharsAttempts.set(e.key, errorCharsAttempts.get(e.key) + 1);
+  errorCharsAttempts.set(currentChar, errorCharsAttempts.get(currentChar) + 1);
   if (currentIndex < currentFullText.length) {
     if (lastCharWrong) {
       currentIndex++;
@@ -621,8 +730,14 @@ textinput.addEventListener("keydown", function (e) {
       correctChars++;
       todaysCharsCorrect++;
       totalCharsCorrect++;
-      errorCharsSuccesses.set(e.key, errorCharsSuccesses.get(e.key) + 1);
+      attempts++;
+      todaysCharsTyped++;
+      totalCharsTyped++;
     } else {
+      errorCharsSuccesses.set(
+        currentChar,
+        errorCharsSuccesses.get(currentChar) + 1
+      );
       incorrectChars++;
       totalCharsIncorrect++;
       todaysCharsIncorrect++;
@@ -631,63 +746,13 @@ textinput.addEventListener("keydown", function (e) {
   }
 
   if (e.keyCode == 37 || e.keyCode == 39) e.preventDefault();
-
-  var innerHtml = '<p id="text-output">';
-  for (var counter = 0; counter < currentFullText.length; counter++) {
-    if (mistyped_indicies[counter] == "error") {
-      if (counter == currentIndex) {
-        innerHtml =
-          innerHtml +
-          '<u style="text-decoration-color:rgb(255,0,0)"><span style="color:rgb(255,0,0)">' +
-          currentFullText.charAt(counter) +
-          "</span></u>";
-      } else {
-        innerHtml =
-          innerHtml +
-          '<span style="color:rgb(200,0,0)">' +
-          currentFullText.charAt(counter) +
-          "</span>";
-      }
-    } else {
-      if (counter == currentIndex) {
-        innerHtml =
-          innerHtml +
-          '<u style="text-decoration-color:rgb(255,200,0)"><span style=" color:rgb(255,200,0)">' +
-          currentFullText.charAt(counter) +
-          "</span></u>";
-      } else if (counter < currentIndex) {
-        innerHtml =
-          innerHtml +
-          '<span style="color:rgb(0,200,0)">' +
-          currentFullText.charAt(counter) +
-          "</span>";
-      } else {
-        if (darkmode_bool) {
-          innerHtml =
-            innerHtml +
-            '<span style="color:rgb(220,220,220)">' +
-            currentFullText.charAt(counter) +
-            "</span>";
-        } else {
-          innerHtml =
-            innerHtml +
-            '<span style="color: black">' +
-            currentFullText.charAt(counter) +
-            "</span>";
-        }
-      }
-    }
-  }
-  innerHtml = innerHtml + "</p>";
-  setSizes();
-  textOutput.innerHTML = innerHtml;
-  if (currentIndex >= currentFullText.length) {
-    todaysSets++;
-    totalSets++;
+  if (currentIndex >= currentFullText.length && done) {
     done = false;
   }
   if (currentIndex >= currentFullText.length && e.key == "Enter") {
+    done = false;
     resetRun();
+    setRandomText();
     done = false;
     setCurrentTryData(
       Math.floor((attempts / time) * 10000) / 10,
@@ -698,10 +763,6 @@ textinput.addEventListener("keydown", function (e) {
   }
 });
 
-/**
- * timer
- */
-
 setInterval(incrementTimer, 10);
 
 var lastIndex = 0;
@@ -709,6 +770,8 @@ var lastStatus = done;
 function incrementTimer() {
   if (!lastStatus) {
     if (done) {
+      todaysSets++;
+      totalSets++;
       time = 0;
       charsmistyped = 0;
       charstyped = 0;

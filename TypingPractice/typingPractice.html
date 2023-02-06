@@ -6,7 +6,7 @@
     </head>
     <body onresize="setSizes()">
         <div class="info-dropdown-general">
-            <button onClick="infoClick()" class="info-dropdown-button" style="color: rgb(220,220,220);">View Stats</button>
+            <button onClick="infoClick()" class="info-dropdown-button" id="dropdown-button-general" style="color: rgb(220,220,220);">View Stats</button>
             <div id="info-dropdown" class="info-dropdown-content">
                 <p>Stats</p>
                 <p><u>Last set:</u></p>
@@ -28,7 +28,7 @@
                 <p> - Total time: 0s</p>
                 <p> - Mistake ratio: 0%</p>
             </div>
-            <button onClick="infoByLetterClick()" class="info-dropdown-button-letter" style="color: rgb(220,220,220);">View Stats by Letter</button>
+            <button onClick="infoByLetterClick()" class="info-dropdown-button-letter" id="dropdown-button-letters" style="color: rgb(220,220,220);">View Stats by Letter</button>
 
 
             <button onClick="resetRun()" id="resetRun" style="color: rgb(220,220,220);;font-size: 12px;">Reset Current Run</button>
@@ -41,7 +41,7 @@
             <div id="info-dropdown-letters" class="info-dropdown-content-letter">
                 <p style="color: rgb(220,220,220)" id="dropdown-letters-stats">Stats</p>
             </div>
-            <p class="tp-title" id="tp-title">Typing Practice</p>
+            <p class="tp-title" id="tp-title"><u>Typing Practice</u></p>
             <input id="dark_mode" value="Dark mode enabled" type="checkbox" style="position:absolute;left:410px;top:100px">
             <p id="dark_mode_desc" style="position: absolute;">Enable/disable dark mode</p>
             <p id="p-length" style="color:rgb(220,220,220); position: absolute; left: 0px; top: 50px; width: 200px;">Text length:</p>
