@@ -417,6 +417,12 @@ function setSizes() {
         green = 0;
         blue = 0;
       }
+      console.log(errorCharsAttempts.get(currentC));
+      if (String(errorCharsAttempts.get(currentC)) == "undefined") {
+        red = 150;
+        green = 0;
+        blue = 150;
+      }
       html =
         html +
         '<p style="color: rgb(' +
