@@ -67,8 +67,15 @@ todaysCharsCorrect = window.localStorage.getItem("todaysCharsCorrect");
 todaysCharsIncorrect = window.localStorage.getItem("todaysCharsIncorrect");
 todaystime = window.localStorage.getItem("todaystime");
 
-errorCharsAttempts = window.localStorage.errorCharsAttempts;
-errorCharsSuccesses = window.localStorage.errorCharsSuccesses;
+try {
+  errorCharsAttempts = new Map(
+    JSON.parse(window.localStorage.errorCharsAttempts)
+  );
+  errorCharsSuccesses = new Map(
+    JSON.parse(window.localStorage.errorCharsSuccesses)
+  );
+} catch (error) {}
+
 try {
   errorCharsAttempts.has("testValue");
 } catch (error) {
@@ -227,8 +234,12 @@ function setSizes() {
   window.localStorage.totalCharsTyped = totalCharsTyped;
   window.localStorage.totalTime = totalTime;
 
-  window.localStorage.errorCharsAttempts = errorCharsAttempts;
-  window.localStorage.errorCharsSuccesses = errorCharsSuccesses;
+  window.localStorage.errorCharsAttempts = JSON.stringify(
+    Array.from(errorCharsAttempts.entries())
+  );
+  window.localStorage.errorCharsSuccesses = JSON.stringify(
+    Array.from(errorCharsSuccesses.entries())
+  );
 
   var leftOffset = windowWidth - 300;
   tp_title.style.left = (windowWidth - 500) / 2 + "px";
@@ -382,9 +393,39 @@ function setSizes() {
           10 +
         "% wrong";
       (" \n");
+      var red = 255;
+      var green = 255;
+      var blue = 0;
+      var factor =
+        Math.floor(
+          (errorCharsSuccesses.get(currentC) /
+            (errorCharsAttempts.get(currentC) -
+              errorCharsSuccesses.get(currentC))) *
+            1000
+        ) / 1000;
+      if (factor <= 0.25) {
+        red = factor * 4 * 255;
+        green = 255;
+        blue = 0;
+      } else if (factor <= 2.25) {
+        factor = factor - 0.25;
+        red = 255;
+        green = (255 - 255 * (factor / 2)) * -1;
+        blue = 0;
+      } else {
+        red = 255;
+        green = 0;
+        blue = 0;
+      }
       html =
         html +
-        '<p style="color: rgb(220,220,220)">' +
+        '<p style="color: rgb(' +
+        red +
+        "," +
+        green +
+        "," +
+        blue +
+        ')">' +
         string_stats_letters +
         "</p>";
     } catch (error) {}
@@ -510,20 +551,26 @@ function setSizes() {
     deleteTodaysDataButton.style.backgroundColor = "rgb(120,120,120)";
     infoDropdownStats.style.backgroundColor = "rgb(50,50,50)";
     infoDropdownLetterStats.style.backgroundColor = "rgb(50,50,50)";
-    if (hoveringStats) {
-      document.getElementById("dropdown-button-general").style.backgroundColor =
-        "rgb(180,180,180)";
-    } else {
-      document.getElementById("dropdown-button-general").style.backgroundColor =
-        "rgb(120,120,120)";
-    }
-    if (hoveringLetters) {
-      document.getElementById("dropdown-button-letters").style.backgroundColor =
-        "rgb(180,180,180)";
-    } else {
-      document.getElementById("dropdown-button-letters").style.backgroundColor =
-        "rgb(120,120,120)";
-    }
+    try {
+      if (hoveringStats) {
+        document.getElementById(
+          "dropdown-button-general"
+        ).style.backgroundColor = "rgb(180,180,180)";
+      } else {
+        document.getElementById(
+          "dropdown-button-general"
+        ).style.backgroundColor = "rgb(120,120,120)";
+      }
+      if (hoveringLetters) {
+        document.getElementById(
+          "dropdown-button-letters"
+        ).style.backgroundColor = "rgb(180,180,180)";
+      } else {
+        document.getElementById(
+          "dropdown-button-letters"
+        ).style.backgroundColor = "rgb(120,120,120)";
+      }
+    } catch (error) {}
   } else {
     body.style.backgroundColor = "white";
     p_cpm.style.color = "black";
