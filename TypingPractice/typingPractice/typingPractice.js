@@ -551,20 +551,26 @@ function setSizes() {
     deleteTodaysDataButton.style.backgroundColor = "rgb(120,120,120)";
     infoDropdownStats.style.backgroundColor = "rgb(50,50,50)";
     infoDropdownLetterStats.style.backgroundColor = "rgb(50,50,50)";
-    if (hoveringStats) {
-      document.getElementById("dropdown-button-general").style.backgroundColor =
-        "rgb(180,180,180)";
-    } else {
-      document.getElementById("dropdown-button-general").style.backgroundColor =
-        "rgb(120,120,120)";
-    }
-    if (hoveringLetters) {
-      document.getElementById("dropdown-button-letters").style.backgroundColor =
-        "rgb(180,180,180)";
-    } else {
-      document.getElementById("dropdown-button-letters").style.backgroundColor =
-        "rgb(120,120,120)";
-    }
+    try {
+      if (hoveringStats) {
+        document.getElementById(
+          "dropdown-button-general"
+        ).style.backgroundColor = "rgb(180,180,180)";
+      } else {
+        document.getElementById(
+          "dropdown-button-general"
+        ).style.backgroundColor = "rgb(120,120,120)";
+      }
+      if (hoveringLetters) {
+        document.getElementById(
+          "dropdown-button-letters"
+        ).style.backgroundColor = "rgb(180,180,180)";
+      } else {
+        document.getElementById(
+          "dropdown-button-letters"
+        ).style.backgroundColor = "rgb(120,120,120)";
+      }
+    } catch (error) {}
   } else {
     body.style.backgroundColor = "white";
     p_cpm.style.color = "black";
