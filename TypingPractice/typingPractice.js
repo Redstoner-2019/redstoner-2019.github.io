@@ -375,7 +375,7 @@ function setSizes() {
   }
   innerHtml = innerHtml + "</p>";
   textOutput.innerHTML = innerHtml;
-
+  var items = 0;
   var html = "";
   for (var counter = 97; counter <= 122; counter++) {
     var currentC = String.fromCharCode(counter);
@@ -418,23 +418,34 @@ function setSizes() {
         blue = 0;
       }
       console.log(errorCharsAttempts.get(currentC));
-      if (String(errorCharsAttempts.get(currentC)) == "undefined") {
-        red = 150;
-        green = 0;
-        blue = 150;
+      if (String(errorCharsAttempts.get(currentC)) != "undefined") {
+        html =
+          html +
+          '<p style="color: rgb(' +
+          red +
+          "," +
+          green +
+          "," +
+          blue +
+          ')">' +
+          string_stats_letters +
+          "</p>";
+        items++;
       }
-      html =
-        html +
-        '<p style="color: rgb(' +
-        red +
-        "," +
-        green +
-        "," +
-        blue +
-        ')">' +
-        string_stats_letters +
-        "</p>";
     } catch (error) {}
+  }
+  if (items == 0) {
+    html =
+      html +
+      '<p style="color: rgb(' +
+      150 +
+      "," +
+      0 +
+      "," +
+      50 +
+      ')">' +
+      "No Data! Type some letters first and they will appear here!" +
+      "</p>";
   }
   html = replaceAll(html, "NaN% wrong", "No Data");
   infoDropdownLetterStats.innerHTML = html;
