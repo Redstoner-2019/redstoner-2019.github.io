@@ -4,5 +4,34 @@
 <p><a href="TypingPractice/typingPractice.html">Typing Practice</a></p>
 <p><a href="ButtonChaser/buttonChaser.html">Button Chaser</a></p>
 <p>version 0.2.4</p>
+<p>import math
+def format(f):
+   f = math.floor(f*100)/100
+   if(str(f)[len(str(f))-2] == "."):
+       return "" + str(f) + "0"
+   return "" + str(f)
+stundenLohnTag = 21.86
+stundenLohnNacht = 24.43
+stundenLohnWochenende = 22.89
+vorname = input("Vorname?\n")
+nachname = input("Nachname?\n")
+strasse = input("Straße?\n")
+hausnummer = input("Hausnummer?\n")
+postleitzahl = input("Postleitzahl?\n")
+stadtName = input("Stadt Name?\n")
+tagStunden = input("Tag Stunden?\n")
+nachtStunden = input("Nacht Stunden?\n")
+wochenendStunden = input("Wochenend Stunden?\n")
+print("\n"*20)
+print("-----------------------------------------------")
+print("Lohnabrechnung für " + vorname + " " + nachname)
+print("Addresse " + strasse + " " + hausnummer + ", " + postleitzahl + " " + stadtName)
+print("-----------------------------------------------")
+print("Lohn Tagesstunden: " + tagStunden + " Stunden a " + format(stundenLohnTag) + "€ total: " + format(float(tagStunden)*stundenLohnTag) + "€")
+print("Lohn Nacht stunden: " + nachtStunden + " Stunden a " + format(stundenLohnNacht) + "€ total: " + format(float(nachtStunden)*stundenLohnNacht) + "€")
+print("Lohn Wochenend stunden: " + wochenendStunden + " Stunden a " + format(stundenLohnWochenende) + "€ total: " + format(float(wochenendStunden)*stundenLohnWochenende) + "€")
+total = float(tagStunden)*stundenLohnTag + float(nachtStunden)*stundenLohnNacht + float(wochenendStunden)*stundenLohnWochenende
+print("Total: " + format(total) + "€")
+print("-----------------------------------------------")</p>
 </body>
 </html>
